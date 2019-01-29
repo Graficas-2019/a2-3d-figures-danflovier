@@ -17,8 +17,12 @@
 		        initViewport(gl, canvas);
 		        initGL(canvas);
 				initShader(gl);
-				// TO DO: create and draw the figures
-				run(gl, []);
+				var canvas_h = canvas.height;
+				// Create and draw the figures
+				var pyramid = createPyramid(gl, [-4, 0, -15], [0.1, 1.0, 0.2]);				//Pyramid
+				var dodecahedron = createDodecahedron(gl, [0, 0, -15], [-0.4, 1.0, 0.1]);	//Dodecahedron
+				var octahedron = createOctahedron(gl, [4, 0, -14], [0.0, 1.0, 0.0]);		//Octahedron
+				run(gl, [pyramid, dodecahedron, octahedron]);
 			}
 	);
 
