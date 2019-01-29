@@ -83,8 +83,15 @@ function createPyramid(gl, translation, rotationAxis)
         0.0, 1.0, 0.0,		// 0
         -0.95, 0.3, 0.0,	// 1 - left
         0.95, 0.3, 0.0,		// 2 - right
+
+        -0.95, 0.3, 0.0,    // 1 - left
+         0.95, 0.3, 0.0,    // 2 - right
        -0.55, -0.8, 0.0,	// 3 - left
+
+        0.95, 0.3, 0.0,     // 2 - right
+        -0.55, -0.8, 0.0,   // 3 - left
         0.55, -0.8, 0.0,	// 4 - right
+
         // SIDE 1
         0.0, 1, 0.0,		// 5 - right
         -0.95, 0.3, 0.0,	// 6 - left
@@ -105,6 +112,7 @@ function createPyramid(gl, translation, rotationAxis)
         0.95, 0.3, 0.0,		// 17 - right
         0.0, 1.0, 0.0,		// 18 - left
         0.0, 0.0, 2.5,		// 19 - top
+        
        ];
 
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
@@ -113,12 +121,14 @@ function createPyramid(gl, translation, rotationAxis)
     var colorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
     var faceColors = [
-        [1.0, 0.0, 0.0, 1.0], // PETAGON Red
-        [0.0, 1.0, 0.0, 1.0], // SIDE 1 Green
-        [0.0, 0.0, 1.0, 1.0], // SIDE 2 Blue
-        [1.0, 1.0, 0.0, 1.0], // SIDE 3 Yellow
-        [1.0, 0.0, 1.0, 1.0], // SIDE 4 Magenta
-        [0.0, 1.0, 1.0, 1.0]  // SIDE 5 Cyan
+        [1.0, 0.0, 0.0, 1.0],   // PENTAGON Rojo
+        [1.0, 0.0, 0.0, 1.0],   // PENTAGON
+        [1.0, 0.0, 0.0, 1.0],   // PENTAGON
+        [0.0, 1.0, 0.0, 1.0],   // SIDE 1 Verde
+        [0.0, 0.0, 1.0, 1.0],   // SIDE 2 Azul
+        [0.0, 1.0, 1.0, 1.0],   // SIDE 5 Cyan
+        [1.0, 1.0, 0.0, 1.0],   // SIDE 3 Amarillo
+        [1.0, 0.0, 1.0, 1.0],   // SIDE 4 Magenta
     ];
 
     // Each vertex must have the color information, that is why the same color is concatenated 4 times, one for each vertex of the pyramid's face.
@@ -131,7 +141,7 @@ function createPyramid(gl, translation, rotationAxis)
     // }
     for (const color of faceColors) 
     {
-        for (var j=0; j < 4; j++)
+        for (var j=0; j < 3; j++)
             vertexColors = vertexColors.concat(color);
     }
 
@@ -141,13 +151,12 @@ function createPyramid(gl, translation, rotationAxis)
     var pyramidIndexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, pyramidIndexBuffer);
     var pyramidIndices = [
-        0, 3, 1,  0, 3, 4, 0, 4, 2,	// PENTAGON
-        5, 6, 7,					// SIDE 1
-        8, 9, 10,					// SIDE 2
-        11, 12, 13,					// SIDE 3
-        14, 15, 16,					// SIDE 4
-        17, 18, 19					// SIDE 5
-        
+        0,1,2, 3,4,5, 6,7,8,        // PENTAGON
+        9,10,11,                    // SIDE 1
+        12,13,14,                   // SIDE 2
+        15,16,17,                   // SIDE 3
+        18,19,20,                   // SIDE 4
+        21,22,23                    // SIDE 5
     ];
 
     // gl.ELEMENT_ARRAY_BUFFER: Buffer used for element indices.
@@ -181,7 +190,7 @@ function createPyramid(gl, translation, rotationAxis)
 }
 
 // Create the vertex, color and index data for a multi-colored dodecahedron
-function createDodecahedron(gl, translation, rotationAxis)
+function createDodecahedron(gl, translation, rotationAxis1, rotationAxis2)
 {    
     // Vertex Data
     var vertexBuffer;
@@ -273,18 +282,15 @@ function createDodecahedron(gl, translation, rotationAxis)
         [1.0, 0.0, 0.0, 1.0],	// SIDE 1 - Rojo
         [0.0, 1.0, 0.0, 1.0],	// SIDE 2 - Verde
         [1.0, 1.0, 0.0, 1.0],	// SIDE 3 - Amarillo
-        [1.0, 1.0, 0.0, 1.0],	// SIDE 3
         [1.0, 0.0, 1.0, 1.0],	// SIDE 4 - Magenta
-        [1.0, 1.0, 1.0, 1.0],	// SIDE 5 - Blanca
-        [0.0, 1.0, 1.0, 1.0],	// SIDE 6 - Cyan
-        [0.0, 1.0, 1.0, 1.0],	// SIDE
-        [1.0, 0.0, 1.0, 1.0],	// SIDE 7 - Magenta
-        [0.0, 0.0, 1.0, 1.0],	// SIDE 8 - Azul
-        [1.0, 0.0, 0.0, 1.0],	// SIDE 9 - Rojo
-        [1.0, 1.0, 0.0, 1.0],	// SIDE 10 - Amarillo
-        [1.0, 0.0, 1.0, 1.0],	// SIDE 11 - Blanco
-        [1.0, 1.0, 0.0, 1.0],	// SIDE 12 - Amarillo
-        [0.0, 1.0, 0.0, 1.0],	// SIDE 
+        [0.0, 0.0, 1.0, 1.0],   // SIDE 8 - Azul
+        [0.0, 1.0, 1.0, 1.0],	// SIDE 5 - Cyan
+        [1.0, 0.0, 0.0, 1.0],	// SIDE 6 - Rojo
+        [0.0, 1.0, 0.0, 1.0],	// SIDE 7 - Verde
+        [0.0, 0.0, 1.0, 1.0],	// SIDE 9 - Azul
+        [1.0, 0.0, 1.0, 1.0],	// SIDE 10 - Magenta
+        [1.0, 1.0, 0.0, 1.0],	// SIDE 11 - Amarillo
+        [0.0, 1.0, 1.0, 1.0]	// SIDE 12 - Cyan
     ];
 
     // Each vertex must have the color information, that is why the same color is concatenated 4 times, one for each vertex of the dodecahedron's face.
@@ -297,7 +303,7 @@ function createDodecahedron(gl, translation, rotationAxis)
     // }
     for (const color of faceColors) 
     {
-        for (var j=0; j < 4; j++)
+        for (var j=0; j < 5; j++)
             vertexColors = vertexColors.concat(color);
     }
 
@@ -345,7 +351,8 @@ function createDodecahedron(gl, translation, rotationAxis)
         // mat4 a the matrix to rotate
         // Number rad the angle to rotate the matrix by
         // vec3 axis the axis to rotate around
-        mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, rotationAxis);
+        mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, rotationAxis1);
+        mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, rotationAxis2);
     };
     
     return dodecahedron;
@@ -406,14 +413,14 @@ function createOctahedron(gl, translation, rotationAxis)
     var colorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
     var faceColors = [
-        [1.0, 0.0, 0.0, 1.0],	// SIDE L1
-        [0.0, 1.0, 0.0, 1.0],	// SIDE L2
-        [1.0, 1.0, 0.0, 1.0],	// SIDE L3
-        [0.0, 0.0, 1.0, 1.0],	// SIDE L4
-        [1.0, 0.0, 1.0, 1.0],	// SIDE R1
-        [0.0, 1.0, 1.0, 1.0],	// SIDE R2
-        [0.0, 1.0, 0.0, 1.0],	// SIDE R3
-        [0.0, 0.0, 1.0, 1.0]	// SIDE R4
+        [1.0, 0.0, 0.0, 1.0],	// SIDE L1 - Rojo
+        [0.0, 1.0, 0.0, 1.0],	// SIDE L2 - Verde
+        [1.0, 1.0, 0.0, 1.0],	// SIDE L3 - Azul
+        [0.0, 0.0, 1.0, 1.0],	// SIDE L4 - Amarillo
+        [1.0, 0.0, 1.0, 1.0],	// SIDE R1 - Magenta
+        [0.0, 1.0, 1.0, 1.0],	// SIDE R2 - Cyan
+        [0.0, 1.0, 0.0, 1.0],	// SIDE R3 - Verde
+        [0.0, 0.0, 1.0, 1.0]	// SIDE R4 - Azul
     ];
 
     // Each vertex must have the color information, that is why the same color is concatenated 4 times, one for each vertex of the octahedron's face.
@@ -426,7 +433,7 @@ function createOctahedron(gl, translation, rotationAxis)
     // }
     for (const color of faceColors) 
     {
-        for (var j=0; j < 4; j++)
+        for (var j=0; j < 3; j++)
             vertexColors = vertexColors.concat(color);
     }
 
